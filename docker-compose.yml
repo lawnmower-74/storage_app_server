@@ -1,0 +1,26 @@
+version: "3.8"
+services:
+  db:
+    image: mysql:8.0.27
+    container_name: db
+    environment:
+      MYSQL_ROOT_PASSWORD: password
+      MYSQL_DATABASE: storage_app
+    ports:
+      - 3307:3306
+    volumes:
+      - mysql_data:/var/lib/mysql
+
+  server:
+    build: .
+    volumes:
+      - ./:/go/src/
+    ports:
+      - "8080:8080"
+    depends_on:
+      - db
+    tty: true
+    stdin_open: true
+    
+volumes:
+  mysql_data:
